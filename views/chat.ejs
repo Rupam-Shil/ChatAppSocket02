@@ -21,32 +21,37 @@
 				<div class="user-profile">
 					<div class="img"></div>
 					<div class="name">
+						<p></p>
+					</div>
+				</div>
+				<div class="user-profile">
+					<div class="img"></div>
+					<div class="name">
+						<p>Mathew</p>
+					</div>
+				</div>
+				<div class="user-profile">
+					<div class="img"></div>
+					<div class="name">
+						<p>Mathew</p>
+					</div>
+				</div>
+				<div class="user-profile">
+					<div class="img"></div>
+					<div class="name">
+						<p>Mathew</p>
+					</div>
+				</div>
+				<div class="user-profile">
+					<div class="img"></div>
+					<div class="name">
 						<p>Mathew</p>
 					</div>
 				</div>
 			</div>
 			<div class="right">
 				<div class="container">
-					<div class="view">
-						<div class="left-chat">
-							<p>
-								Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-								Maiores, autem. Lorem ipsum dolor sit amet consectetur
-								adipisicing elit. Unde, incidunt. Perspiciatis vitae fuga
-								temporibus tempora reprehenderit sapiente quia voluptatem
-								dignissimos!
-							</p>
-						</div>
-						<div class="right-chat">
-							<p>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit.
-								Laboriosam perferendis est suscipit explicabo reprehenderit
-								commodi delectus, accusantium itaque adipisci quod.
-							</p>
-						</div>
-
-						<div class="left-chat">Lorem ipsum</div>
-					</div>
+					<div class="view"></div>
 					<div class="input">
 						<form>
 							<input type="text" placeholder="Type Something...." />
@@ -56,5 +61,41 @@
 				</div>
 			</div>
 		</section>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			const server = io();
+			const submit = document.querySelector('button');
+			const form = document.querySelector('form');
+			const message = document.querySelector('input');
+			const userMessage = document.querySelector('.left-chat');
+			const clientMessage = document.querySelector('.right-chat');
+			const view = document.querySelector('.view');
+			const left = document.querySelector('.left');
+
+			form.addEventListener('submit', (e) => {
+				e.preventDefault();
+				if (message.value) {
+					server.emit('send Message', message.value);
+					const rightChat = document.createElement('div');
+					rightChat.classList.add('right-chat');
+					rightChat.innerHTML = `<p>${message.value}</p>`;
+					view.appendChild(rightChat);
+					message.value = '';
+					view.scrollTop = view.scrollHeight;
+				}
+			});
+
+			server.on('message', (msg) => {
+				const leftChat = document.createElement('div');
+				leftChat.classList.add('left-chat');
+				leftChat.innerHTML = `<p>${msg}</p>`;
+				view.appendChild(leftChat);
+				view.scrollTop = view.scrollHeight;
+			});
+			// server.on('new user', (name) => {
+			// 	const
+			// });
+		</script>
 	</body>
 </html>
