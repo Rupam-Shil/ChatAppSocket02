@@ -18,36 +18,6 @@
 		<section>
 			<div class="left">
 				<!-- TODO: -->
-				<div class="user-profile">
-					<div class="img"></div>
-					<div class="name">
-						<p></p>
-					</div>
-				</div>
-				<div class="user-profile">
-					<div class="img"></div>
-					<div class="name">
-						<p>Mathew</p>
-					</div>
-				</div>
-				<div class="user-profile">
-					<div class="img"></div>
-					<div class="name">
-						<p>Mathew</p>
-					</div>
-				</div>
-				<div class="user-profile">
-					<div class="img"></div>
-					<div class="name">
-						<p>Mathew</p>
-					</div>
-				</div>
-				<div class="user-profile">
-					<div class="img"></div>
-					<div class="name">
-						<p>Mathew</p>
-					</div>
-				</div>
 			</div>
 			<div class="right">
 				<div class="container">
@@ -93,9 +63,42 @@
 				view.appendChild(leftChat);
 				view.scrollTop = view.scrollHeight;
 			});
-			// server.on('new user', (name) => {
-			// 	const
-			// });
+
+			server.on('new user', (users) => {
+				const allusers = document.querySelectorAll('.user-profile');
+				allusers.forEach((user) => {
+					user.remove();
+				});
+				users.forEach((user) => {
+					const divUser = document.createElement('div');
+					divUser.classList.add('user-profile');
+					divUser.innerHTML = `<div class="img"></div>
+					<div class="name">
+						<p>${user.name}</p>
+					</div>`;
+					divUser.setAttribute('data-id', user.id);
+					left.appendChild(divUser);
+				});
+
+				// const divUser = document.createElement('div');
+				// divUser.classList.add('user-profile');
+				// divUser.innerHTML = `<div class="img"></div>
+				// 	<div class="name">
+				// 		<p>${name.name}</p>
+				// 	</div>`;
+				// divUser.setAttribute('data-id', name.id);
+				// left.appendChild(divUser);
+			});
+
+			server.on('disconnected', (id) => {
+				const users = document.querySelectorAll('.user-profile');
+				users.forEach((user) => {
+					if (id === user.dataset.id) {
+						console.log('here');
+						user.remove();
+					}
+				});
+			});
 		</script>
 	</body>
 </html>

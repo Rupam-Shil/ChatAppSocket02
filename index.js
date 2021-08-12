@@ -10,14 +10,19 @@ app.set('view engine', 'ejs');
 app.use(express.static('css'));
 
 const io = new Server(server);
-const users = [];
+let users = [];
 io.on('connection', (socket) => {
 	const sillyName = generateName();
-	io.emit('new user', sillyName);
-	// users.push({ name: sillyName });
-	// console.log(users);
+	const id = socket.id;
+	users.push({ name: sillyName, id: id });
+	// io.emit('new user', { name: sillyName, id: id });
+	io.emit('new user', users);
 	socket.on('disconnect', () => {
 		console.log('A user disconnected');
+		users = users.filter((user) => {
+			return user.id !== socket.id;
+		});
+		io.emit('disconnected', socket.id);
 	});
 	socket.on('send Message', (msg) => {
 		socket.broadcast.emit('message', msg);
