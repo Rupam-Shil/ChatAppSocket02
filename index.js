@@ -33,6 +33,6 @@ app.get('/', (req, res) => {
 	res.render('chat');
 });
 
-server.listen(9000, () => {
+server.listen(PORT, () => {
 	console.log('Running on Port 9000');
 });
